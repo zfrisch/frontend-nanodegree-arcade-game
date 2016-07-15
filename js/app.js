@@ -33,7 +33,7 @@ var globalEnv = {
       }, 500);
     }
   }
-}
+};
 
 globalEnv.showStats.init(); //initialize the stats display.
 var _gen = globalEnv._gen; //house the generator in an easier to use variable.
@@ -47,7 +47,7 @@ var Enemy = function(x, y, speed) {
   this.sprite = 'images/enemy-bug.png';
  
   //set up Enemy's X,Y coordinates and how fast it will move across the screen.
-  this.x = x
+  this.x = x;
   this.y = y;
   this.speed = speed;
 
@@ -75,7 +75,7 @@ Enemy.prototype.update = function(dt) {
 
 Enemy.prototype.checkForCollide = function(){
 	//create a bounding box around the enemy and check for player connection.
-	a = this, b = player;
+	var a = this, b = player;
 	a.width = 80;
 	a.height = b.width = b.height = 50;
 	//check for collision
@@ -93,7 +93,7 @@ Enemy.prototype.checkForCollide = function(){
             item.x = 0;
           });
 	}
-}
+};
 
 // Draw the enemy on the screen, required method for game
 Enemy.prototype.render = function() {
@@ -112,10 +112,10 @@ var Player = function(x, y, speed) {
 	//set up ternary/if statements to keep within boundaries.
     switch (key) {
       case "left":
-        (this.x >= 25) ? this.x = this.x - 100: console.log('boundary left');
+        (this.x >= 25) ? this.x = this.x - 100 : console.log('boundary left');
         break;
       case "right":
-        (this.x <= 375) ? this.x = this.x + 100: console.log('boundary right');
+        (this.x <= 375) ? this.x = this.x + 100 : console.log('boundary right');
         break;
       case "down":
         (this.y <= 400) ? this.y = this.y + 100: console.log('boundary bottom');
@@ -137,8 +137,8 @@ var Player = function(x, y, speed) {
         }
         break;
     }   
-  }
-}
+  };
+};
 
 Player.prototype = Object.create(Enemy.prototype); //make Player prototype match Enemy prototype
 Player.prototype.constructor = Player; //make sure the correct constructor is returned on call
@@ -148,26 +148,26 @@ Player.prototype.reset = function() {
   this.x = 200;
   this.y = 425;
   this.render();
-}
+};
 
 //Generator constructor function
 //it's referenced in the globalEnv block but separated for easy access.
 //a.e. if anyone wanted to modify the speed, Y range, they can easily.
 function Generator() {
   this.enemyY = function() { //place enemies only within a certain Y range
-    var topMost = min = 75; //top most boundary
-    var bottomMost = max = 225; //lower most boundary
+    var min = 75; //top most boundary
+    var max = 225; //lower most boundary
     return Math.random() * (max - min) + min;  //return random Y
-  }
+  };
   this.enemySpeed = function(speed) {//create speed based on given value(100) and level number.
     return Math.random() * (speed * globalEnv.level.number); 
-  }
+  };
   this.enemy = function() {//return new enemy.
     var newEnemy = new Enemy(0, this.enemyY(), this.enemySpeed(100)); 
 	newEnemy.prototype = Object.create(Enemy.prototype);
 	newEnemy.prototype.constructor = Enemy;
     return newEnemy;
-  }
+  };
 
 }
 
