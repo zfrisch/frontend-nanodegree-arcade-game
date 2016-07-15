@@ -1,3 +1,6 @@
+var image = new Image();
+image.src = 'images/char-boy.png';
+console.log(image.naturalHeight);
 //set up global environment for items that need to be reached in all functions
 var globalEnv = {
   _gen: new Generator(), //setup generator function for dynamic enemy X,Y coordinates and dynamic enemy generation.
@@ -16,7 +19,7 @@ var globalEnv = {
       globalEnv.score.amount += 500;  //on level completion add 500 to score
     },
 	lose: function() {
-		globalEnv.score.amount -= 500; // remove 500 points on lose
+		globalEnv.score.amount = 0; // score set to 0
 	}
   },
   score: {
@@ -67,15 +70,19 @@ Enemy.prototype.update = function(dt) {
   }
   //sharing this prototype with player means we have to be sure it's an enemy
   //then we check for collisions.
-  if(this.constructor.name == 'Enemy') checkForCollide(this); 
+  if(this.constructor.name == 'Enemy') this.checkForCollide(); 
 };
 
-function checkForCollide(obj) {
-	var bob = obj.y + 90;
-	var tob = obj.y + 135;
-	var pb = player.y + 73;
-	var pt = player.y + 120;
-	if( pt >= bob && player.x + 25 <= obj.x + 88 && pb <= tob && player.x + 76 >= obj.x + 11) { //if element collides
+Enemy.prototype.checkForCollide = function(){
+	//create a bounding box around the enemy and check for player connection.
+	a = this, b = player;
+	a.width = 80;
+	a.height = b.width = b.height = 50;
+	//check for collision
+	if( a.x < b.x + b.width &&
+         a.x + a.width > b.x &&
+         a.y < b.y + b.height &&
+         a.y + a.height > b.y) { //if element collides
 		alertIt(); //call the alertIt function. 
 		player.reset();
 	}
@@ -105,17 +112,17 @@ var Player = function(x, y, speed) {
 	//set up ternary/if statements to keep within boundaries.
     switch (key) {
       case "left":
-        (this.x >= 0) ? this.x = this.x - 25: console.log('boundary left');
+        (this.x >= 25) ? this.x = this.x - 100: console.log('boundary left');
         break;
       case "right":
-        (this.x <= 400) ? this.x = this.x + 25: console.log('boundary right');
+        (this.x <= 375) ? this.x = this.x + 100: console.log('boundary right');
         break;
       case "down":
-        (this.y <= 400) ? this.y = this.y + 25: console.log('boundary bottom');
+        (this.y <= 400) ? this.y = this.y + 100: console.log('boundary bottom');
         break;
       case "up":
-        if (this.y >= 25) { //check if player hasn't made it to the top
-          this.y = this.y - 25;
+        if (this.y >= 100) { //check if player hasn't made it to the top
+          this.y = this.y - 100;
         } else { //if player is a top, complete level, regenerate enemies and reset player position.
           globalEnv.level.complete();
           allEnemies = [];
@@ -126,7 +133,7 @@ var Player = function(x, y, speed) {
 
             allEnemies.push(newEnemy);
           }
-          player.reset();
+          this.reset();
         }
         break;
     }   
