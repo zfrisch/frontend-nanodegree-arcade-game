@@ -129,7 +129,7 @@ var Player = function(x, y, speed) {
           for (i = 0; i < globalEnv.level.number; i++) {
             var newEnemy = globalEnv._gen.enemy();
             newEnemy.prototype = Object.create(Enemy.prototype);
-            newEnemy.constructor = globalEnv._gen.enemy;
+            newEnemy.constructor = Enemy;
 
             allEnemies.push(newEnemy);
           }
@@ -164,6 +164,8 @@ function Generator() {
   }
   this.enemy = function() {//return new enemy.
     var newEnemy = new Enemy(0, this.enemyY(), this.enemySpeed(100)); 
+	newEnemy.prototype = Object.create(Enemy.prototype);
+	newEnemy.prototype.constructor = Enemy;
     return newEnemy;
   }
 
