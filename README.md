@@ -7,5 +7,5 @@ This Project is Forked from [Udacity Front-End Project](https://github.com/udaci
 ## To Play This Game
 * Move the Character with the Left, Right, Down, and Up arrow keys.
 * Avoid the Bugs!
-	*They will get faster and more numerous as you complete levels!
+	* They will get faster and more numerous as you complete levels!
 * To complete a level move the character safely to the other edge of the screen(_the blue area)
